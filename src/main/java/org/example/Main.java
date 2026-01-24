@@ -23,21 +23,37 @@ public class Main {
         );
 
         System.out.println("[Pedido Comida]");
+        pedidoComida.asignarRepartidor("Juan Pérez");
         pedidoComida.mostrarResumen();
         System.out.println("Tiempo estimado de entrega: "
                 + pedidoComida.calcularTiempoEntrega() + " minutos");
+        pedidoComida.despachar();
         System.out.println("\n");
 
-        System.out.println("[Pedio Encomienda]");
+        System.out.println("[Pedido Encomienda]");
+        pedidoEncomienda.asignarRepartidor();
         pedidoEncomienda.mostrarResumen();
         System.out.println("Tiempo estimado de entrega: "
                 + pedidoEncomienda.calcularTiempoEntrega() + " minutos");
+        pedidoEncomienda.cancelar("Cliente no se encontraba en domicilio");
         System.out.println("\n");
 
         System.out.println("[Pedido Express]");
+        pedidoExpress.asignarRepartidor("María Soto");
         pedidoExpress.mostrarResumen();
         System.out.println("Tiempo estimado de entrega: "
                 + pedidoExpress.calcularTiempoEntrega() + " minutos");
+        pedidoExpress.despachar();
+
+        //AQUI MOSTRAMOS LOS HISTORIALES
+
+        System.out.println("\n[Historial Pedido Comida]");
+        pedidoComida.verHistorial().forEach(System.out::println);
+
+        System.out.println("\n[Historial Pedido Encomienda]");
+        pedidoEncomienda.verHistorial().forEach(System.out::println);
+
+        System.out.println("\n[Historial Pedido Express]");
+        pedidoExpress.verHistorial().forEach(System.out::println);
     }
 }
-
