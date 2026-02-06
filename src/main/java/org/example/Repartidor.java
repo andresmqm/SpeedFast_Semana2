@@ -7,39 +7,75 @@ import java.util.List;
 public class Repartidor implements Runnable {
 
     private String nombre;
-    private List<Pedido> pedidos;
+    private ZonaCarga zonaCarga;
 
-    public Repartidor(String nombre, List<Pedido> pedidos) {
+    public Repartidor(String nombre, ZonaCarga zonaCarga) {
         this.nombre = nombre;
-        this.pedidos = pedidos;
+        this.zonaCarga = zonaCarga;
     }
 
-    @Override
+
+    //----SEMANA4----//
+
+   // @Override
+    //public void run() {
+      //  System.out.println("Repartidor " + nombre + " inicia entregas");
+
+        //for (Pedido pedido : pedidos) {
+          //  try {
+            //    System.out.println(nombre + " entregando pedido " + pedido.idPedido);
+              //  pedido.asignarRepartidor(nombre);
+
+//                int tiempo = pedido.calcularTiempoEntrega();
+  //              Thread.sleep(5000);
+
+//                if (pedido instanceof Despachable despachable) {
+  //                  despachable.despachar();
+    //            }
+
+      //          System.out.println("Pedido " + pedido.idPedido + " entregado");
+
+        //    } catch (InterruptedException e) {
+          //      System.out.println("Repartidor interrumpido");
+
+            //}
+
+          //  System.out.println("Repartidor " + nombre + " finalizo");
+       // }
+
+   // }
+
+
+    //----SEMANA5----//
+
     public void run() {
         System.out.println("Repartidor " + nombre + " inicia entregas");
 
-        for (Pedido pedido : pedidos) {
-            try {
-                System.out.println(nombre + " entregando pedido " + pedido.idPedido);
-                pedido.asignarRepartidor(nombre);
+        while (true) {
+            Pedido pedido = zonaCarga.retirarPedido();
 
-                int tiempo = pedido.calcularTiempoEntrega();
+            if (pedido == null) {
+                break;
+            }
+
+            try {
+                pedido.asignarRepartidor(nombre);
                 Thread.sleep(5000);
 
                 if (pedido instanceof Despachable despachable) {
                     despachable.despachar();
                 }
 
-                System.out.println("Pedido " + pedido.idPedido + " entregado");
+                pedido.setEstado(EstadoPedido.ENTREGADO);
+                System.out.println("Pedido " + pedido.getIdPedido()
+                        + " entregado por " + nombre);
 
             } catch (InterruptedException e) {
-                System.out.println("Repartidor interrumpido");
-
+                Thread.currentThread().interrupt();
             }
-
-            System.out.println("Repartidor " + nombre + " finalizo");
         }
 
+        System.out.println("Repartidor " + nombre + " finalizó");
     }
 }
 

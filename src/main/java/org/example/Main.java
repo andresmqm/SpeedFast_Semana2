@@ -26,32 +26,80 @@ public class Main {
                 6
         );
 
+        PedidoEncomienda pedidoEncomienda2 = new PedidoEncomienda(
+                35478,
+                "Santiago Centro",
+                8.7
+        );
+
+        PedidoComida pedidoComida2 = new PedidoComida(
+                66687,
+                "La Florida",
+                6.3
+        );
+
         //-------------SEMANA 4-------------//
         //----APLICAMOS HILOS----//
 
-        List<Pedido>  pedidosAna = List.of(pedidoComida);
-        List<Pedido>  pedidosCarla = List.of(pedidoEncomienda);
-        List<Pedido>  pedidosRebeca = List.of(pedidoExpress);
+        //List<Pedido>  pedidosAna = List.of(pedidoComida);
+       // List<Pedido>  pedidosCarla = List.of(pedidoEncomienda);
+       // List<Pedido>  pedidosRebeca = List.of(pedidoExpress);
 
-        Repartidor repartidor1 = new Repartidor(
-                "Ana", pedidosAna
-        );
+       // Repartidor repartidor1 = new Repartidor(
+        //        "Ana", pedidosAna
+       // );
 
-        Repartidor repartidor2 = new Repartidor(
-                "Carla", pedidosCarla
-        );
-        Repartidor repartidor3 = new Repartidor(
-                "Rebeca", pedidosRebeca
-        );
+       // Repartidor repartidor2 = new Repartidor(
+       //         "Carla", pedidosCarla
+       // );
+       // Repartidor repartidor3 = new Repartidor(
+       //         "Rebeca", pedidosRebeca
+       // );
 
-        ExecutorService executor =
-                Executors.newFixedThreadPool(3);
+       // ExecutorService executor =
+       //        Executors.newFixedThreadPool(3);
 
-        executor.execute(repartidor1);
-        executor.execute(repartidor2);
-        executor.execute(repartidor3);
+       // executor.execute(repartidor1);
+        //executor.execute(repartidor2);
+        //executor.execute(repartidor3);
 
-        executor.shutdown();
+        //executor.shutdown();
+
+        //----SEMANA 5----//
+
+        ZonaCarga zonaCarga = new ZonaCarga();
+
+        zonaCarga.agregarPedido(pedidoComida);
+        zonaCarga.agregarPedido(pedidoComida2);
+        zonaCarga.agregarPedido(pedidoEncomienda);
+        zonaCarga.agregarPedido(pedidoEncomienda2);
+        zonaCarga.agregarPedido(pedidoExpress);
+
+        Repartidor r1 = new Repartidor("Ana", zonaCarga);
+        Repartidor r2 = new Repartidor("Carla", zonaCarga);
+        Repartidor r3 = new Repartidor("Rebeca", zonaCarga);
+
+        Thread t1 = new Thread(r1);
+        Thread t2 = new Thread(r2);
+        Thread t3 = new Thread(r3);
+
+        t1.start();
+        t2.start();
+        t3.start();
+
+        try {
+            t1.join();
+            t2.join();
+            t3.join();
+        }catch (InterruptedException e){
+            System.out.println("Error");
+            Thread.currentThread().interrupt();
+        }
+
+        System.out.println("Todos los pedidos han sido entregados exitosamente");
+
+    }
+}
 
 
 
@@ -93,5 +141,3 @@ public class Main {
 
        // System.out.println("\n[Historial Pedido Express]");
         //pedidoExpress.verHistorial().forEach(System.out::println);
-    }
-}
